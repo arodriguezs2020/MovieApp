@@ -3,14 +3,16 @@ package com.example.movieapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.movieapp.core.Resource
 import com.example.movieapp.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
 
 class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
 
-    // --- Creamos un metodo que nos va a devolver tres llamadas a la API --- //
-    fun fetchMainScreenMovies() = liveData(Dispatchers.IO) {
+    // --- Creamos un metodo que nos va a devolver tres llamadas a la API, este hilo se eliminara
+    // cuando el viewModel se elimine y en el hilo principal --- //
+    fun fetchMainScreenMovies() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
         // Con esta llamada le decimos que esta cargando los datos
         emit(Resource.Loading())
 
