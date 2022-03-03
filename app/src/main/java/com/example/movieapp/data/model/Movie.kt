@@ -30,7 +30,7 @@ data class Movie(
 
 data class MovieList(val results: List<Movie> = listOf())
 
-// Room
+// ---> ROOM <--- //
 
 
 // --- Con este metodo creamos la tabla de la base de datos --- //
@@ -64,7 +64,7 @@ data class MovieEntity(
     val movie_type: String = ""
 )
 
-// --- Con este metodo devolvemos una lista de peliculas --- //
+// --- Con este metodo trasformamos una List<MovieEntity> en una MovieList --- //
 fun List<MovieEntity>.toMovieList(): MovieList {
     val resultList = mutableListOf<Movie>()
     this.forEach { movieEntity ->
@@ -90,6 +90,7 @@ fun MovieEntity.toMovie(): Movie = Movie(
     this.movie_type
 )
 
+// --- Función auxiliar para trasformar una Movie en una MovieEntity --- //
 fun Movie.toMovieEntity(movieType: String): MovieEntity = MovieEntity(
     this.id,
     this.adult,

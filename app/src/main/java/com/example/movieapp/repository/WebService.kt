@@ -9,9 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 // ---
-//
 //      Creamos la interfaz WebService que utilizando Retrofit hará las llamadas al Servidor
-//
 // ---
 
 interface WebService {

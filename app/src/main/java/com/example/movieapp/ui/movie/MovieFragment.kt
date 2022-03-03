@@ -12,6 +12,7 @@ import com.example.movieapp.core.Resource
 import com.example.movieapp.data.local.AppDatabase
 import com.example.movieapp.data.local.LocalMovieDataSource
 import com.example.movieapp.data.model.Movie
+import com.example.movieapp.data.model.MovieList
 import com.example.movieapp.data.remote.RemoteMovieDataSource
 import com.example.movieapp.databinding.FragmentMovieBinding
 import com.example.movieapp.presentation.MovieViewModel
@@ -45,11 +46,14 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
         super.onViewCreated(view, savedInstanceState)
         // Bindeamos el fragmento con nuestra vista
         binding = FragmentMovieBinding.bind(view)
-
         concatadapter = ConcatAdapter()
 
-        // Con esta sentencia estamos controlando cuando esta cargando los datos, cuando los trae
+        // Con este metodo estamos controlando cuando esta cargando los datos, cuando los trae
         // correctamente y cuando hay un error
+        optimizandoResultadoAPI()
+    }
+
+    private fun optimizandoResultadoAPI() {
         viewModel.fetchMainScreenMovies().observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -57,42 +61,45 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
                 }
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    concatadapter.apply {
-                        addAdapter(
-                            0,
-                            UpcomingConcatAdapter(
-                                MovieAdapter(
-                                    result.data.first.results,
-                                    this@MovieFragment
-                                )
-                            )
-                        )
-                        addAdapter(
-                            1,
-                            TopRatedConcatAdapter(
-                                MovieAdapter(
-                                    result.data.second.results,
-                                    this@MovieFragment
-                                )
-                            )
-                        )
-                        addAdapter(
-                            2,
-                            PopularConcatAdapter(
-                                MovieAdapter(
-                                    result.data.third.results,
-                                    this@MovieFragment
-                                )
-                            )
-                        )
-                    }
-
+                    rellenarConcatAdapter(result)
                     binding.rvMovies.adapter = concatadapter
                 }
                 is Resource.Failure -> {
                     binding.progressBar.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    private fun rellenarConcatAdapter(result: Resource.Success<Triple<MovieList, MovieList, MovieList>>) {
+        concatadapter.apply {
+            addAdapter(
+                0,
+                UpcomingConcatAdapter(
+                    MovieAdapter(
+                        result.data.first.results,
+                        this@MovieFragment
+                    )
+                )
+            )
+            addAdapter(
+                1,
+                TopRatedConcatAdapter(
+                    MovieAdapter(
+                        result.data.second.results,
+                        this@MovieFragment
+                    )
+                )
+            )
+            addAdapter(
+                2,
+                PopularConcatAdapter(
+                    MovieAdapter(
+                        result.data.third.results,
+                        this@MovieFragment
+                    )
+                )
+            )
         }
     }
 

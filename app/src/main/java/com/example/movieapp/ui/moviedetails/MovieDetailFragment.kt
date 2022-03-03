@@ -18,14 +18,19 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMovieDetailBinding.bind(view)
+        implementacionDatos()
+    }
 
-        Glide.with(requireContext()).load("https://image.tmdb.org/t/p/w500/${args.posterImageUrl}").centerCrop().into(binding.imgMovie)
-        Glide.with(requireContext()).load("https://image.tmdb.org/t/p/w500/${args.backgroundImageUrl}").centerCrop().into(binding.imgBackgroud)
+    private fun implementacionDatos() {
+        Glide.with(requireContext()).load("https://image.tmdb.org/t/p/w500/${args.posterImageUrl}")
+            .centerCrop().into(binding.imgMovie)
+        Glide.with(requireContext())
+            .load("https://image.tmdb.org/t/p/w500/${args.backgroundImageUrl}").centerCrop()
+            .into(binding.imgBackgroud)
         binding.txtDescription.text = args.overview
         binding.txtMovieTitle.text = args.title
         binding.txtLanguage.text = "Language ${args.language}"
         binding.txtRating.text = "${args.voteAverage} (${args.voteCount} Reviews)"
         binding.txtReleased.text = "Released ${args.releaseDate}"
     }
-
 }

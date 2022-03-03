@@ -7,7 +7,9 @@ import com.example.movieapp.core.BaseConcatHolder
 import com.example.movieapp.databinding.UpcomingMoviesRowBinding
 import com.example.movieapp.ui.movie.adapters.MovieAdapter
 
-// --- Creamos un adaptador para cada una de las llamadas a la API y luego las juntaremos todas --- //
+// ---
+//      Creamos un adaptador para cada una de las llamadas a la API y luego las juntaremos todas
+// ---
 class UpcomingConcatAdapter(private val moviesAdapter: MovieAdapter): RecyclerView.Adapter<BaseConcatHolder<*>>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseConcatHolder<*> {
         val itemBinding = UpcomingMoviesRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)

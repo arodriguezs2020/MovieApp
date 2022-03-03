@@ -6,7 +6,12 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.movieapp.data.model.MovieEntity
 
-// --- Creamos una interfaz DAO con los metodos que vamos a utilizar para interactuar con la base de datos SQLite --- //
+// ---
+//
+//      Creamos una interfaz DAO con los metodos que vamos a utilizar para interactuar con la base
+//      de datos SQLite
+//
+// ---
 @Dao
 interface MovieDao {
 

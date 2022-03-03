@@ -10,8 +10,12 @@ import kotlinx.coroutines.Dispatchers
 
 class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
 
-    // --- Creamos un metodo que nos va a devolver tres llamadas a la API, este hilo se eliminara
-    // cuando el viewModel se elimine y en el hilo principal --- //
+    // ---
+    //
+    //      Creamos un metodo que nos va a devolver tres llamadas a la API, este hilo se eliminara
+    //      cuando el viewModel se elimine y en el hilo principal
+    //
+    // ---
     fun fetchMainScreenMovies() = liveData(viewModelScope.coroutineContext + Dispatchers.Main) {
         // Con esta llamada le decimos que esta cargando los datos
         emit(Resource.Loading())

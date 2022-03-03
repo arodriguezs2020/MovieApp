@@ -6,6 +6,7 @@ import kotlinx.coroutines.coroutineScope
 import java.net.InetSocketAddress
 import java.net.Socket
 
+// --- Esta clase la utilizamos para comprobar si el usuario tiene o no acceso a Internet --- //
 object InternetCheck {
 
     suspend fun isNetworkAvalable() = coroutineScope {

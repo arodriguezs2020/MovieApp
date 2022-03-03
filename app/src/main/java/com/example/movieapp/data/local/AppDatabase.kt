@@ -9,9 +9,9 @@ import com.example.movieapp.data.model.MovieEntity
 // ---
 //
 //      Creamos la Database y le creamos una instancia de la base de datos:
-//          1. Y ponemos dos metodos, uno para devolver la base de datos y otra para destruirla
+//      Y ponemos dos metodos, uno para devolver la base de datos y otra para destruirla
 //
-// --- //
+// ---
 
 @Database(entities = [MovieEntity::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
@@ -30,7 +30,8 @@ abstract class AppDatabase: RoomDatabase() {
             ).build()
             return INSTANCE!!
         }
-/*
+/* Esta función nos sirve para borrar la base de datos SQLite
+
         fun destroyInstance() {
             INSTANCE = null
         }
