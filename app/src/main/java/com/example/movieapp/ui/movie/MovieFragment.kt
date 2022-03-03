@@ -3,20 +3,18 @@ package com.example.movieapp.ui.movie
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.R
-import com.example.movieapp.core.BaseConcatHolder
 import com.example.movieapp.core.Resource
+import com.example.movieapp.data.local.AppDatabase
+import com.example.movieapp.data.local.LocalMovieDataSource
 import com.example.movieapp.data.model.Movie
-import com.example.movieapp.data.remote.MovieDataSource
+import com.example.movieapp.data.remote.RemoteMovieDataSource
 import com.example.movieapp.databinding.FragmentMovieBinding
-import com.example.movieapp.databinding.UpcomingMoviesRowBinding
 import com.example.movieapp.presentation.MovieViewModel
 import com.example.movieapp.presentation.MovieViewModelFactory
 import com.example.movieapp.repository.MovieRepositoryImpl
@@ -26,15 +24,17 @@ import com.example.movieapp.ui.movie.adapters.concat.PopularConcatAdapter
 import com.example.movieapp.ui.movie.adapters.concat.TopRatedConcatAdapter
 import com.example.movieapp.ui.movie.adapters.concat.UpcomingConcatAdapter
 
-class MovieFragment: Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieClickListener {
+class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieClickListener {
 
     // Hacemos una variable del Fragmento
     private lateinit var binding: FragmentMovieBinding
+
     // Hacemos una variable del viewModel
     private val viewModel by viewModels<MovieViewModel> {
         MovieViewModelFactory(
             MovieRepositoryImpl(
-                MovieDataSource(RetrofitClient.webservice)
+                RemoteMovieDataSource(RetrofitClient.webservice),
+                LocalMovieDataSource(AppDatabase.getDatabase(requireContext()).movieDao())
             )
         )
     }
@@ -52,16 +52,37 @@ class MovieFragment: Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieClic
         // Con esta sentencia estamos controlando cuando esta cargando los datos, cuando los trae
         // correctamente y cuando hay un error
         viewModel.fetchMainScreenMovies().observe(viewLifecycleOwner, Observer { result ->
-            when(result) {
+            when (result) {
                 is Resource.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.GONE
                     concatadapter.apply {
-                        addAdapter(0, UpcomingConcatAdapter(MovieAdapter(result.data.first.results, this@MovieFragment)))
-                        addAdapter(1, TopRatedConcatAdapter(MovieAdapter(result.data.second.results, this@MovieFragment)))
-                        addAdapter(2, PopularConcatAdapter(MovieAdapter(result.data.third.results, this@MovieFragment)))
+                        addAdapter(0,
+                            UpcomingConcatAdapter(
+                                MovieAdapter(
+                                    result.data.first.results,
+                                    this@MovieFragment
+                                )
+                            )
+                        )
+                        addAdapter(1,
+                            TopRatedConcatAdapter(
+                                MovieAdapter(
+                                    result.data.second.results,
+                                    this@MovieFragment
+                                )
+                            )
+                        )
+                        addAdapter(2,
+                            PopularConcatAdapter(
+                                MovieAdapter(
+                                    result.data.third.results,
+                                    this@MovieFragment
+                                )
+                            )
+                        )
                     }
 
                     binding.rvMovies.adapter = concatadapter

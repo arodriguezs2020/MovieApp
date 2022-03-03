@@ -11,7 +11,7 @@ import com.example.movieapp.repository.WebService
 //
 // ---
 
-class MovieDataSource(private val webService: WebService) {
+class RemoteMovieDataSource(private val webService: WebService) {
 
     suspend fun getUpcomingMovies(): MovieList = webService.getUpcomingMovies(AppConstants.API_KEY)
 
