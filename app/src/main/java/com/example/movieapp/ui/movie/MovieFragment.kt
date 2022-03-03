@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import com.example.movieapp.R
@@ -51,7 +50,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
 
         // Con esta sentencia estamos controlando cuando esta cargando los datos, cuando los trae
         // correctamente y cuando hay un error
-        viewModel.fetchMainScreenMovies().observe(viewLifecycleOwner, Observer { result ->
+        viewModel.fetchMainScreenMovies().observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
@@ -59,7 +58,8 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.GONE
                     concatadapter.apply {
-                        addAdapter(0,
+                        addAdapter(
+                            0,
                             UpcomingConcatAdapter(
                                 MovieAdapter(
                                     result.data.first.results,
@@ -67,7 +67,8 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
                                 )
                             )
                         )
-                        addAdapter(1,
+                        addAdapter(
+                            1,
                             TopRatedConcatAdapter(
                                 MovieAdapter(
                                     result.data.second.results,
@@ -75,7 +76,8 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
                                 )
                             )
                         )
-                        addAdapter(2,
+                        addAdapter(
+                            2,
                             PopularConcatAdapter(
                                 MovieAdapter(
                                     result.data.third.results,
@@ -91,7 +93,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie), MovieAdapter.OnMovieCli
                     binding.progressBar.visibility = View.GONE
                 }
             }
-        })
+        }
     }
 
     override fun onMovieClick(movie: Movie) {

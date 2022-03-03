@@ -1,3 +1,5 @@
+@file:Suppress("BlockingMethodInNonBlockingContext")
+
 package com.example.movieapp.core
 
 import kotlinx.coroutines.coroutineScope

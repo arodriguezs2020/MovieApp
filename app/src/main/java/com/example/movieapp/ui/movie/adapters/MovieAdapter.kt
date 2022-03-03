@@ -10,6 +10,7 @@ import com.example.movieapp.core.BaseViewHolder
 import com.example.movieapp.data.model.Movie
 import com.example.movieapp.databinding.MovieItemBinding
 
+@Suppress("DEPRECATION")
 class MovieAdapter(private val moviesList: List<Movie>,
                    private val itemClickListener: OnMovieClickListener): RecyclerView.Adapter<BaseViewHolder<*>>() {
 
