@@ -12,7 +12,7 @@ class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
 
     // ---
     //
-    //      Creamos un metodo que nos va a devolver tres llamadas a la API, este hilo se eliminara
+    //      Creamos un metodo que nos va a devolver tres emit, este hilo se eliminara
     //      cuando el viewModel se elimine y en el hilo principal
     //
     // ---
@@ -30,7 +30,7 @@ class MovieViewModel(private val repo: MovieRepository) : ViewModel() {
     }
 }
 
-// Este metodo Factory es muy necesario para la llamada del ViewModel en el MovieFragment
+// Este metodo Factory es necesario para la llamada del ViewModel en el MovieFragment
 class MovieViewModelFactory(private val repo: MovieRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return modelClass.getConstructor(MovieRepository::class.java).newInstance(repo)
