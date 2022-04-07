@@ -21,7 +21,6 @@ interface WebService {
     suspend fun getPopularMovies(@Query ("api_key") apiKey: String): MovieList
 }
 
-
 // ---
 //
 //      Creamos el objeto RetrofitClient donde contruiremos el webservice y pasando la información

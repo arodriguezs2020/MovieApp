@@ -17,20 +17,27 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMovieDetailBinding.bind(view)
-        implementacionDatos()
+        implementationDates()
     }
 
+    private fun implementationDates() {
+        printImages()
+        printTexts()
+    }
     @SuppressLint("SetTextI18n")
-    private fun implementacionDatos() {
-        Glide.with(requireContext()).load("https://image.tmdb.org/t/p/w500/${args.posterImageUrl}")
-            .centerCrop().into(binding.imgMovie)
-        Glide.with(requireContext())
-            .load("https://image.tmdb.org/t/p/w500/${args.backgroundImageUrl}").centerCrop()
-            .into(binding.imgBackgroud)
+    private fun printTexts() {
         binding.txtDescription.text = args.overview
         binding.txtMovieTitle.text = args.title
         binding.txtLanguage.text = "Language ${args.language}"
         binding.txtRating.text = "${args.voteAverage} (${args.voteCount} Reviews)"
         binding.txtReleased.text = "Released ${args.releaseDate}"
+    }
+
+    private fun printImages() {
+        Glide.with(requireContext()).load("https://image.tmdb.org/t/p/w500/${args.posterImageUrl}")
+            .centerCrop().into(binding.imgMovie)
+        Glide.with(requireContext())
+            .load("https://image.tmdb.org/t/p/w500/${args.backgroundImageUrl}").centerCrop()
+            .into(binding.imgBackgroud)
     }
 }
